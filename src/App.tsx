@@ -18,29 +18,37 @@ class App extends React.Component {
     region: "Germany",
     weeks: 1,
     dailyData: [],
-    isError: false
+    isError: false,
   }
 
   async componentDidMount() {
-    try{
-      const { region ,weeks } = this.state
-      const fetchedData: { confirmed: number; recovered: number; deaths: number } = await fetchWeeklyData(weeks,region)
-      const dailyData = await fetchAllWeekData(weeks,region)
+    try {
+      const { region, weeks } = this.state
+      const fetchedData: {
+        confirmed: number
+        recovered: number
+        deaths: number
+      } = await fetchWeeklyData(weeks, region)
+      const dailyData = await fetchAllWeekData(weeks, region)
       this.setState({
         confirmed: fetchedData.confirmed,
         recovered: fetchedData.recovered,
         deaths: fetchedData.deaths,
         dailyData,
       })
-    }catch (e){
-      this.setState({isError: true})
+    } catch (e) {
+      this.setState({ isError: true })
     }
   }
 
   handleCountryChange = async (region: string) => {
-    try{
+    try {
       const { weeks } = this.state
-      const fetchedData: { confirmed: number; recovered: number; deaths: number } = await fetchWeeklyData(weeks, region)
+      const fetchedData: {
+        confirmed: number
+        recovered: number
+        deaths: number
+      } = await fetchWeeklyData(weeks, region)
       const dailyData = await fetchAllWeekData(weeks, region)
       this.setState({
         region,
@@ -49,25 +57,29 @@ class App extends React.Component {
         deaths: fetchedData.deaths,
         dailyData,
       })
-    }catch (e){
-      this.setState({isError: true})
+    } catch (e) {
+      this.setState({ isError: true })
     }
   }
 
   handleWeekChange = async (weeks: string) => {
-    try{
+    try {
       const { region } = this.state
-      const fetchedData: { confirmed: number; recovered: number; deaths: number } = await fetchWeeklyData(Number(weeks), region)
+      const fetchedData: {
+        confirmed: number
+        recovered: number
+        deaths: number
+      } = await fetchWeeklyData(Number(weeks), region)
       const dailyData = await fetchAllWeekData(Number(weeks), region)
       this.setState({
         confirmed: fetchedData.confirmed,
         recovered: fetchedData.recovered,
         deaths: fetchedData.deaths,
         dailyData,
-        weeks: Number(weeks)
+        weeks: Number(weeks),
       })
-    }catch (e){
-      this.setState({isError: true})
+    } catch (e) {
+      this.setState({ isError: true })
     }
   }
 
@@ -75,14 +87,9 @@ class App extends React.Component {
     const { recovered, confirmed, deaths, dailyData, isError } = this.state
     return (
       <div className={styles.container}>
-        <h1>Germany Covid19 Data</h1>
+        <h1>Germany Coronavirus Statistics</h1>
         <Grid container spacing={3} justifyContent="center">
-          <Grid
-            item
-            component={Card}
-            xs={10}
-            md={2}
-          >
+          <Grid item component={Card} xs={10} md={2}>
             <FormLabel>Select Country</FormLabel>
             <br />
             <RegionPicker handleCountryChange={this.handleCountryChange} />
@@ -101,29 +108,26 @@ class App extends React.Component {
         </Grid>
         <Cards deaths={deaths} recovered={recovered} confirmed={confirmed} />
 
-        { !isError &&
-        <Grid container spacing={3} justifyContent="center">
-          <Grid
-            item
-            component={Card}
-            xs={10}
-            md={4}
-          >
-            <FormLabel  className={cx(styles.center)}>Week/Weeks Summary</FormLabel>
-            <Chart confirmed={confirmed} deaths={deaths} recovered={recovered} />
+        {!isError && (
+          <Grid container spacing={3} justifyContent="center">
+            <Grid item component={Card} xs={10} md={4}>
+              <FormLabel className={cx(styles.center)}>
+                Week/Weeks Summary
+              </FormLabel>
+              <Chart
+                confirmed={confirmed}
+                deaths={deaths}
+                recovered={recovered}
+              />
+            </Grid>
+            <Grid item component={Card} xs={10} md={4} justifyContent="center">
+              <FormLabel className={cx(styles.center)}>
+                All time summary within the period
+              </FormLabel>
+              <LineChart summary={dailyData} />
+            </Grid>
           </Grid>
-          <Grid
-            item
-            component={Card}
-            xs={10}
-            md={4}
-            justifyContent="center"
-          >
-            <FormLabel  className={cx(styles.center)} >All time summary within the period</FormLabel>
-            <LineChart summary={dailyData} />
-          </Grid>
-        </Grid>
-        }
+        )}
       </div>
     )
   }

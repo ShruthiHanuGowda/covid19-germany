@@ -12,5 +12,10 @@ body {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+}
+
+h1 {
+  margin-top: 5px;
+  margin-bottom: 40px;
 }
