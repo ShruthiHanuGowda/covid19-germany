@@ -1,11 +1,10 @@
-const webpack = require("webpack");
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { DefinePlugin } from "webpack"
 
-module.exports = {
-  mode: "production",
-  devtool: "source-map",
-  plugins: [
-    new webpack.DefinePlugin({
-      "process.env.name": JSON.stringify("Prod Ninja"),
-    }),
-  ],
-};
+export const mode = "production"
+export const devtool = "source-map"
+export const plugins = [
+  new DefinePlugin({
+    "process.env.name": JSON.stringify("Prod"),
+  }),
+]

@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios"
 import DailySummaryData from "../models/DailySummaryData"
 
